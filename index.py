@@ -1,46 +1,44 @@
 import pyautogui
 import random
 import string
-import hashlib
 import time
+import hashlib
 
-# === CONFIGURAÇÕES ===
 
-# Coordenadas da caixa de comentário (ajuste conforme sua tela)
-coord_x = 800  # substitua pelo valor certo
-coord_y = 900  # substitua pelo valor certo
 
-# Texto fixo que será enviado antes da parte aleatória
-mensagem_base = "Ótimo vídeo!"
+# --- CONFIGURAÇÕES ---
+coord_x = 794  # ajuste aqui para a posição X da caixa de comentários no seu monitor
+coord_y = 500  # ajuste aqui para a posição Y da caixa de comentários no seu monitor
 
-# Tempo entre cada envio de comentário (em segundos)
-intervalo = 60
+intervalo = 400  # segundos entre cada comentário
 
-# Tempo para o usuário focar a janela ao iniciar
-tempo_preparar = 5
+# Mensagem base fixa
+mensagem_base = "Confira essa oportunidade_>http://www.espiritosanto-es.com.br/cloudflare"
 
-# === FUNÇÃO PARA GERAR TEXTO ÚNICO ===
-def gerar_texto_unico():
+def gerar_texto_unico(base):
     aleatorio = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
     hash_curto = hashlib.md5(str(time.time()).encode()).hexdigest()[:6]
-    return f"{mensagem_base} {aleatorio}_{hash_curto}"
+    return f"{base}\n {aleatorio}_{hash_curto}\n     confira->seguro auto (27)99949-7001 \ncalvice nós temos  a solução->https://www.larissasaib.com.br/ \n{aleatorio}_{hash_curto}\nhttps://www.instagram.com/robertaotcham/\nhttps://www.instagram.com/geocredibnkvitoria/\n{aleatorio}_{hash_curto}"    
 
-# === INÍCIO DO BOT ===
-print("Bot iniciando...")
-print(f"Você tem {tempo_preparar} segundos para focar o YouTube ou a janela desejada.")
-time.sleep(tempo_preparar)
+
+
+print("Você tem 5 segundos para posicionar a janela do YouTube com a caixa de comentário visível...")
+time.sleep(5)
 
 while True:
-    texto = gerar_texto_unico()
-    print(f"Comentário gerado: {texto}")
+    texto = gerar_texto_unico(mensagem_base)
+    print(f"Enviando comentário: {texto}")
 
-    # Clica na caixa de comentários e digita
+    # Move o mouse até a caixa de comentários e clica
     pyautogui.moveTo(coord_x, coord_y, duration=0.5)
     pyautogui.click()
     time.sleep(0.5)
 
+    # Digita o texto
     pyautogui.write(texto, interval=0.05)
+
+    # Pressiona Enter para enviar
     pyautogui.press('enter')
 
-    print(f"Comentário enviado. Aguardando {intervalo} segundos...\n")
+    print(f"Comentário enviado! Esperando {intervalo} segundos para o próximo...")
     time.sleep(intervalo)
