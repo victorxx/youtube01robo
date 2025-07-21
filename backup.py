@@ -10,13 +10,13 @@ import hashlib
 coord_x = 794  # ajuste aqui para a posição X da caixa de comentários no seu monitor
 coord_y = 500  # ajuste aqui para a posição Y da caixa de comentários no seu monitor
 
-intervalo = 400  # segundos entre cada comentário
+intervalo = 18000  # segundos entre cada comentário
 
 # Mensagem base fixa
 mensagem_base = "Confira essa oportunidade_>http://www.espiritosanto-es.com.br/cloudflare"
 
 def gerar_texto_unico(base):
-    aleatorio = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+    aleatorio = ''.join(random.choices(string.ascii_letters + string.digits, k=33))
     hash_curto = hashlib.md5(str(time.time()).encode()).hexdigest()[:6]
     return f"{base}\n {aleatorio}_{hash_curto}\n     confira->seguro auto (27)99949-7001 \ncalvice nós temos  a solução->https://www.larissasaib.com.br/ \n{aleatorio}_{hash_curto}\nhttps://www.instagram.com/robertaotcham/\nhttps://www.instagram.com/geocredibnkvitoria/\n{aleatorio}_{hash_curto}"    
 
