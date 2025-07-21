@@ -1,53 +1,46 @@
+import pyautogui
 import random
 import string
-import pyautogui
-import time
 import hashlib
+import time
 
-ANUNCIOS_PATH = r'C:\Users\Administrator\Desktop\bot_pyautogui\anuncios.txt'
+# === CONFIGURAÇÕES ===
 
-COORD_X = 800
-COORD_Y = 900
+# Coordenadas da caixa de comentário (ajuste conforme sua tela)
+coord_x = 800  # substitua pelo valor certo
+coord_y = 900  # substitua pelo valor certo
 
-INTERVALO = 60
-TEMPO_PREPARO = 5
+# Texto fixo que será enviado antes da parte aleatória
+mensagem_base = "Ótimo vídeo!"
 
-def carregar_anuncios(path):
-    with open(path, 'r', encoding='utf-8') as f:
-        anuncios = [linha.strip() for linha in f.readlines() if linha.strip()]
-    return anuncios
+# Tempo entre cada envio de comentário (em segundos)
+intervalo = 60
 
-def gerar_hash_unica(texto):
-    # Usa o timestamp para garantir unicidade a cada chamada
-    unico = texto + str(time.time())
-    hash_obj = hashlib.md5(unico.encode('utf-8'))
-    return hash_obj.hexdigest()[:8]  # Pega os primeiros 8 caracteres para ser curto
+# Tempo para o usuário focar a janela ao iniciar
+tempo_preparar = 5
 
-def main():
-    anuncios = carregar_anuncios(ANUNCIOS_PATH)
-    if not anuncios:
-        print("Arquivo de anúncios vazio! Verifique o arquivo e tente novamente.")
-        return
+# === FUNÇÃO PARA GERAR TEXTO ÚNICO ===
+def gerar_texto_unico():
+    aleatorio = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+    hash_curto = hashlib.md5(str(time.time()).encode()).hexdigest()[:6]
+    return f"{mensagem_base} {aleatorio}_{hash_curto}"
 
-    print(f"Você tem {TEMPO_PREPARO} segundos para focar a janela correta...")
-    time.sleep(TEMPO_PREPARO)
+# === INÍCIO DO BOT ===
+print("Bot iniciando...")
+print(f"Você tem {tempo_preparar} segundos para focar o YouTube ou a janela desejada.")
+time.sleep(tempo_preparar)
 
-    while True:
-        anuncio = random.choice(anuncios)
-        hash_unico = gerar_hash_unica(anuncio)
-        texto = f"{anuncio} #{hash_unico}"  # Pode mudar o formato, aqui usei "#" antes do hash
+while True:
+    texto = gerar_texto_unico()
+    print(f"Comentário gerado: {texto}")
 
-        print(f"Enviando: {texto}")
+    # Clica na caixa de comentários e digita
+    pyautogui.moveTo(coord_x, coord_y, duration=0.5)
+    pyautogui.click()
+    time.sleep(0.5)
 
-        pyautogui.moveTo(COORD_X, COORD_Y, duration=0.5)
-        pyautogui.click()
-        time.sleep(0.5)
+    pyautogui.write(texto, interval=0.05)
+    pyautogui.press('enter')
 
-        pyautogui.write(texto, interval=0.05)
-        pyautogui.press('enter')
-
-        print(f"Comentário enviado! Aguardando {INTERVALO} segundos para próximo...")
-        time.sleep(INTERVALO)
-
-if __name__ == "__main__":
-    main()
+    print(f"Comentário enviado. Aguardando {intervalo} segundos...\n")
+    time.sleep(intervalo)
