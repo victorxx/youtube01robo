@@ -1,0 +1,9 @@
+import pyautogui
+import time
+while True:
+    print('ok posicione o mouse até o alvo....')
+    print('ok aguarde scanear a coordenada...')
+    time.sleep(30)
+    pyautogui.position()
+    print(pyautogui.position())
+    time.sleep(60)
